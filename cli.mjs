@@ -28,6 +28,7 @@ function usage() {
   hippo export --out memory.json     导出整份记忆（不给 --out 就打 stdout）
   hippo import --in memory.json [--mode merge|replace]
   hippo forget [--topic fight] [--older-than 30] [--dry-run] [--force] [--hard]
+  hippo report [--out archive.md] [--subject 主人]  导出人读的记忆档案
 
 Options: --db, --api-key, --model, --base-url, --lang zh|en
 Docs: docs/cli.md
@@ -120,6 +121,15 @@ if (cmd === 'encode') {
   const r = hip.importMemory(data, { mode: flags.mode || 'merge' })
   const rows = Object.values(r.imported).reduce((a, b) => a + b, 0)
   console.log(`导入完成（${r.mode}）：${rows} 行`)
+} else if (cmd === 'report') {
+  const md = hip.report({ subject: flags.subject })
+  const out = flags.out || flags.file
+  if (out) {
+    fs.writeFileSync(path.resolve(out), md)
+    console.log(`档案已写出：${out}（${md.split('\n').length} 行）`)
+  } else {
+    console.log(md)
+  }
 } else if (cmd === 'forget') {
   const r = hip.forget({
     id: flags.id,
