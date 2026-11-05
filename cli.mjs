@@ -27,6 +27,7 @@ function usage() {
   hippo demo
   hippo export --out memory.json     导出整份记忆（不给 --out 就打 stdout）
   hippo import --in memory.json [--mode merge|replace]
+  hippo forget [--topic fight] [--older-than 30] [--dry-run] [--force] [--hard]
   hippo report [--out archive.md] [--subject 主人]  导出人读的记忆档案
 
 Options: --db, --api-key, --model, --base-url, --lang zh|en
@@ -128,6 +129,24 @@ if (cmd === 'encode') {
     console.log(`档案已写出：${out}（${md.split('\n').length} 行）`)
   } else {
     console.log(md)
+  }
+} else if (cmd === 'forget') {
+  const r = hip.forget({
+    id: flags.id,
+    topic: flags.topic,
+    subject: flags.subject,
+    olderThan: flags.older ?? flags['older-than'],
+    force: !!flags.force,
+    hard: !!flags.hard,
+    dryRun: !!flags['dry-run'] || !!flags.dryRun,
+  })
+  if (!r.matched) {
+    console.log(`没有匹配到可遗忘的记忆${r.skipped ? `（${r.skipped} 条置顶的没动，需要 --force）` : ''}`)
+  } else if (r.dryRun) {
+    console.log(`将遗忘 ${r.matched} 条（--dry-run，未落库）：`)
+    for (const e of r.events) console.log(`  #${e.id} ${e.day} ${e.what}`)
+  } else {
+    console.log(`已遗忘 ${r.matched} 条（${r.mode}）：${r.ids.join(', ')}`)
   }
 } else if (cmd === 'demo') {
   // 不需要模型：直接塞几条事件，演示衰减与召回

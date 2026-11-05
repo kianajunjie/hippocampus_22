@@ -14,6 +14,7 @@ import { handleTurn } from './turn.mjs'
 import { health as runHealth } from './health.mjs'
 import { exportState, importState } from './port.mjs'
 import { memoryReport } from './report.mjs'
+import { forget as runForget } from './forget.mjs'
 
 /**
  * Create a hippocampus instance.
@@ -228,6 +229,11 @@ export async function createHippocampus(options = {}) {
     /** 导出人读的记忆档案（Markdown），可以贴进博客或复盘。 */
     report(opts = {}) {
       return memoryReport(db, { language: cfg.language, ...opts })
+    },
+
+    /** 主动遗忘：默认软遗忘（可审计），置顶的要用 force。 */
+    forget(opts = {}) {
+      return runForget(db, opts)
     },
 
     /**
