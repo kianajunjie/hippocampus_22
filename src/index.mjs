@@ -12,6 +12,7 @@ import {
 import { ensureIdentities, bindIdentity, resolveIdentity, identitiesOf } from './identity.mjs'
 import { handleTurn } from './turn.mjs'
 import { health as runHealth } from './health.mjs'
+import { exportState, importState } from './port.mjs'
 
 /**
  * Create a hippocampus instance.
@@ -211,6 +212,16 @@ export async function createHippocampus(options = {}) {
     /** 记忆体检测：只读，了解这份记忆"健康不健康"。 */
     health(opts = {}) {
       return runHealth(db, { language: cfg.language, ...opts })
+    },
+
+    /** 导出整份记忆为普通 JSON（能读、能 diff、能跨机器带走）。 */
+    exportMemory(opts = {}) {
+      return exportState(db, opts)
+    },
+
+    /** 导入记忆快照：mode=merge 追加（id 重映射），mode=replace 覆盖。 */
+    importMemory(data, opts = {}) {
+      return importState(db, data, opts)
     },
 
     /**

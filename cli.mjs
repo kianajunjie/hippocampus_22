@@ -25,6 +25,8 @@ function usage() {
   hippo skill-add 剪视频 "剪,视频" "去静音+whisper"
   hippo gap-add "quokkacore" "群友提过"
   hippo demo
+  hippo export --out memory.json     导出整份记忆（不给 --out 就打 stdout）
+  hippo import --in memory.json [--mode merge|replace]
 
 Options: --db, --api-key, --model, --base-url, --lang zh|en
 Docs: docs/cli.md
@@ -99,6 +101,24 @@ if (cmd === 'encode') {
   console.log(JSON.stringify(hip.stats()))
 } else if (cmd === 'health') {
   console.log(formatHealth(hip.health(), config.language || hip.cfg.language || 'zh'))
+} else if (cmd === 'export') {
+  const dump = hip.exportMemory()
+  const out = flags.out || flags.file
+  const text = JSON.stringify(dump, null, 2)
+  if (out) {
+    fs.writeFileSync(path.resolve(out), text)
+    const rows = Object.values(dump.counts).reduce((a, b) => a + b, 0)
+    console.log(`导出完成：${rows} 行 -> ${out}`)
+  } else {
+    console.log(text)
+  }
+} else if (cmd === 'import') {
+  const file = flags.in || flags.file || positional[0]
+  if (!file) { usage(); process.exit(2) }
+  const data = JSON.parse(fs.readFileSync(path.resolve(file), 'utf8'))
+  const r = hip.importMemory(data, { mode: flags.mode || 'merge' })
+  const rows = Object.values(r.imported).reduce((a, b) => a + b, 0)
+  console.log(`导入完成（${r.mode}）：${rows} 行`)
 } else if (cmd === 'demo') {
   // 不需要模型：直接塞几条事件，演示衰减与召回
   const today = new Date().toLocaleDateString('sv-SE')
