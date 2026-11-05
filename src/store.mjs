@@ -3,6 +3,10 @@ import path from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
 
 export function openStore(dbPath) {
+  if (typeof dbPath !== 'string' || !dbPath) {
+    // 走不到这里才是正常的；走到了说明配置合并出了问题，给一句能看懂的提示
+    throw new Error('openStore 需要一个记忆文件路径：请传 options.db，或先用 resolveConfig() 合并默认值')
+  }
   fs.mkdirSync(path.dirname(dbPath), { recursive: true })
   const db = new DatabaseSync(dbPath)
   db.exec(`
