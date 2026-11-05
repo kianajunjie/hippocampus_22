@@ -63,7 +63,7 @@ if (cmd === 'encode') {
   const r = hip.remember(text, { subject: flags.subject, topic: flags.topic, pin: !!flags.pin, affect: Number(flags.affect) || 0 })
   console.log(JSON.stringify(r))
 } else if (cmd === 'list') {
-  for (const e of hip.list(Number(flags.limit) || 20)) {
+  for (const e of hip.list(listCount(positional, flags))) {
     console.log(`${e.day} [${e.subject || '-'}] ${e.pinned ? '📌' : '  '} ${e.what}  (${e.strength.toFixed(2)})`)
   }
 } else if (cmd === 'context') {
