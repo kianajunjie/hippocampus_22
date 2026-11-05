@@ -17,23 +17,24 @@ for (let i = 0; i < rest.length; i++) {
 }
 
 function usage() {
-  console.log(`dsh-hippocampus — memory for a companion bot (the 大肥鱼 kind)
+  console.log(`hippocampus_22 — 陪伴型机器人的情感记忆层
+  可执行名：hippo / hippocampus-22（源码目录里也可以 node cli.mjs <命令>）
 
-  dsh-hippocampus encode --turns <file.json> [--db path]
-  dsh-hippocampus replay        [--db path]
-  dsh-hippocampus recall "text" [--subject 主人] [--db path]
-  dsh-hippocampus remember "text" [--subject 主人] [--pin] [--topic fear]
-  dsh-hippocampus context [--subject 主人] ["这轮说的话"]
-  dsh-hippocampus list [n] | audit | stats
-  dsh-hippocampus rel 主人 | rel-shift 主人 intimacy:1 unresolved:1 why:吵架
-  dsh-hippocampus fact-add 主人 住在 杭州 | facts 主人
-  dsh-hippocampus chapter-add 2026-10 2026-11 "开始养她" "吵架、买娃娃"
-  dsh-hippocampus skill-add 剪视频 "剪,视频" "去静音+whisper"
-  dsh-hippocampus gap-add "quokkacore" "群友提过"
-  dsh-hippocampus demo
-  dsh-hippocampus encode --turns turns.json
+  hippo encode --turns <file.json> [--db path]
+  hippo replay        [--db path]
+  hippo recall "text" [--subject 主人] [--db path]
+  hippo remember "text" [--subject 主人] [--pin] [--topic fear]
+  hippo context [--subject 主人] ["这轮说的话"]
+  hippo list [n] | audit | stats
+  hippo rel 主人 | rel-shift 主人 intimacy:1 unresolved:1 why:吵架
+  hippo fact-add 主人 住在 杭州 | facts 主人
+  hippo chapter-add 2026-10 2026-11 "开始养她" "吵架、买娃娃"
+  hippo skill-add 剪视频 "剪,视频" "去静音+whisper"
+  hippo gap-add "quokkacore" "群友提过"
+  hippo demo
 
 Options: --db, --api-key, --model, --base-url, --lang zh|en
+Docs: docs/cli.md
 
 turns.json: [{"at":"2026-11-01T12:00:00Z","user":"...","reply":"..."}]
 `)
