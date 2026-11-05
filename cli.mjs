@@ -2,19 +2,10 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { createHippocampus } from './src/index.mjs'
+import { parseArgs, listCount } from './src/cli-args.mjs'
 
 const [, , cmd, ...rest] = process.argv
-const flags = {}
-const positional = []
-for (let i = 0; i < rest.length; i++) {
-  if (rest[i].startsWith('--')) {
-    const k = rest[i].slice(2)
-    const v = rest[i + 1] && !rest[i + 1].startsWith('--') ? rest[++i] : true
-    flags[k] = v
-  } else {
-    positional.push(rest[i])
-  }
-}
+const { flags, positional } = parseArgs(rest)
 
 function usage() {
   console.log(`hippocampus_22 — 陪伴型机器人的情感记忆层
