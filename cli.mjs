@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { createHippocampus } from './src/index.mjs'
 import { parseArgs, listCount } from './src/cli-args.mjs'
+import { formatHealth } from './src/health.mjs'
 
 const [, , cmd, ...rest] = process.argv
 const { flags, positional } = parseArgs(rest)
@@ -17,6 +18,7 @@ function usage() {
   hippo remember "text" [--subject 主人] [--pin] [--topic fear]
   hippo context [--subject 主人] ["这轮说的话"]
   hippo list [n] | audit | stats
+  hippo health                      记忆体检测：强度、快见底的、没解开的疙瘩
   hippo rel 主人 | rel-shift 主人 intimacy:1 unresolved:1 why:吵架
   hippo fact-add 主人 住在 杭州 | facts 主人
   hippo chapter-add 2026-10 2026-11 "开始养她" "吵架、买娃娃"
@@ -95,6 +97,8 @@ if (cmd === 'encode') {
   console.log(JSON.stringify(hip.audit(), null, 2))
 } else if (cmd === 'stats') {
   console.log(JSON.stringify(hip.stats()))
+} else if (cmd === 'health') {
+  console.log(formatHealth(hip.health(), config.language || hip.cfg.language || 'zh'))
 } else if (cmd === 'demo') {
   // 不需要模型：直接塞几条事件，演示衰减与召回
   const today = new Date().toLocaleDateString('sv-SE')
