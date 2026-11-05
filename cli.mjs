@@ -2,19 +2,10 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { createHippocampus } from './src/index.mjs'
+import { parseArgs, listCount } from './src/cli-args.mjs'
 
 const [, , cmd, ...rest] = process.argv
-const flags = {}
-const positional = []
-for (let i = 0; i < rest.length; i++) {
-  if (rest[i].startsWith('--')) {
-    const k = rest[i].slice(2)
-    const v = rest[i + 1] && !rest[i + 1].startsWith('--') ? rest[++i] : true
-    flags[k] = v
-  } else {
-    positional.push(rest[i])
-  }
-}
+const { flags, positional } = parseArgs(rest)
 
 function usage() {
   console.log(`hippocampus_22 — 陪伴型机器人的情感记忆层
@@ -72,7 +63,7 @@ if (cmd === 'encode') {
   const r = hip.remember(text, { subject: flags.subject, topic: flags.topic, pin: !!flags.pin, affect: Number(flags.affect) || 0 })
   console.log(JSON.stringify(r))
 } else if (cmd === 'list') {
-  for (const e of hip.list(Number(flags.limit) || 20)) {
+  for (const e of hip.list(listCount(positional, flags))) {
     console.log(`${e.day} [${e.subject || '-'}] ${e.pinned ? '📌' : '  '} ${e.what}  (${e.strength.toFixed(2)})`)
   }
 } else if (cmd === 'context') {
