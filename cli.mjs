@@ -27,6 +27,7 @@ function usage() {
   hippo demo
   hippo export --out memory.json     导出整份记忆（不给 --out 就打 stdout）
   hippo import --in memory.json [--mode merge|replace]
+  hippo forget [--topic fight] [--older-than 30] [--dry-run] [--force] [--hard]
 
 Options: --db, --api-key, --model, --base-url, --lang zh|en
 Docs: docs/cli.md
@@ -119,6 +120,24 @@ if (cmd === 'encode') {
   const r = hip.importMemory(data, { mode: flags.mode || 'merge' })
   const rows = Object.values(r.imported).reduce((a, b) => a + b, 0)
   console.log(`导入完成（${r.mode}）：${rows} 行`)
+} else if (cmd === 'forget') {
+  const r = hip.forget({
+    id: flags.id,
+    topic: flags.topic,
+    subject: flags.subject,
+    olderThan: flags.older ?? flags['older-than'],
+    force: !!flags.force,
+    hard: !!flags.hard,
+    dryRun: !!flags['dry-run'] || !!flags.dryRun,
+  })
+  if (!r.matched) {
+    console.log(`没有匹配到可遗忘的记忆${r.skipped ? `（${r.skipped} 条置顶的没动，需要 --force）` : ''}`)
+  } else if (r.dryRun) {
+    console.log(`将遗忘 ${r.matched} 条（--dry-run，未落库）：`)
+    for (const e of r.events) console.log(`  #${e.id} ${e.day} ${e.what}`)
+  } else {
+    console.log(`已遗忘 ${r.matched} 条（${r.mode}）：${r.ids.join(', ')}`)
+  }
 } else if (cmd === 'demo') {
   // 不需要模型：直接塞几条事件，演示衰减与召回
   const today = new Date().toLocaleDateString('sv-SE')
