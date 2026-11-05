@@ -88,7 +88,22 @@ hippocampus_22 只做一件事：**把"陪一个人聊久了"这件事拆成可�
 | 加命令行子命令 | `cli.mjs` 的分发链，一条 `else if` 一段 |
 | 换默认衰减曲线 | `config.mjs` 的 `decay` 段（`base / emotionBoost / floor / mergeCap / mergeWindowDays`） |
 
-## 5. 失败姿态
+## 5. 运维四件套（v0.2.0）
+
+记忆内核跑起来之后，真正缺的是"怎么知道它还好、怎么搬走、怎么看得懂、怎么删干净"。
+四个模块都只读写已有的 8 张表，不改内核语义，所以升级无迁移成本：
+
+| 模块 | 入口 | 只读？ | 作用 |
+| --- | --- | --- | --- |
+| `health.mjs` | `hip.health()` / `hippo health` | 是 | 体检：活跃/作废/置顶/快见底/超期、分层条数、关系疙瘩，给 empty/starving/tired/healthy 四档结论 |
+| `port.mjs` | `hip.exportMemory()` / `importMemory()` | 否 | 整份记忆导出为 JSON；导入分 replace（原 id 恢复）与 merge（id 重映射、边跟着改），全程在事务里 |
+| `report.mjs` | `hip.report()` / `hippo report` | 是 | 导出人读的 Markdown 档案，按层排好，作废条目单独成段 |
+| `forget.mjs` | `hip.forget()` / `hippo forget` | 否 | 条件遗忘；默认软遗忘（可 audit 追溯），置顶需 force，顺带清掉悬挂的联想边 |
+
+一个细节：`port` 的 merge 模式必须重映射事件 id —— 联想边记的是事件 id，
+如果照搬旧 id，导入后边会指到不相干的事件上。这一点有专门的单测守着。
+
+## 6. 失败姿态
 
 插件壳（`adapters/dsh.mjs`）对宿主能力全部做了防御：`systemPrompt` / `tools` 缺了
 就记一行日志继续跑，**不会把宿主拖死**；宿主没有的字段一律可选链读取。
