@@ -30,7 +30,7 @@
     "examples"
   ],
   "scripts": {
-    "test": "node --test test/",
+    "test": "node --test",
     "demo": "node cli.mjs demo"
   },
   "keywords": [
