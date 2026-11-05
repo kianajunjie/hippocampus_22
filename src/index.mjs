@@ -13,6 +13,7 @@ import { ensureIdentities, bindIdentity, resolveIdentity, identitiesOf } from '.
 import { handleTurn } from './turn.mjs'
 import { health as runHealth } from './health.mjs'
 import { exportState, importState } from './port.mjs'
+import { forget as runForget } from './forget.mjs'
 
 /**
  * Create a hippocampus instance.
@@ -222,6 +223,11 @@ export async function createHippocampus(options = {}) {
     /** 导入记忆快照：mode=merge 追加（id 重映射），mode=replace 覆盖。 */
     importMemory(data, opts = {}) {
       return importState(db, data, opts)
+    },
+
+    /** 主动遗忘：默认软遗忘（可审计），置顶的要用 force。 */
+    forget(opts = {}) {
+      return runForget(db, opts)
     },
 
     /**
