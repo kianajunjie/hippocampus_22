@@ -13,6 +13,7 @@ import { ensureIdentities, bindIdentity, resolveIdentity, identitiesOf } from '.
 import { handleTurn } from './turn.mjs'
 import { health as runHealth } from './health.mjs'
 import { exportState, importState } from './port.mjs'
+import { memoryReport } from './report.mjs'
 
 /**
  * Create a hippocampus instance.
@@ -222,6 +223,11 @@ export async function createHippocampus(options = {}) {
     /** 导入记忆快照：mode=merge 追加（id 重映射），mode=replace 覆盖。 */
     importMemory(data, opts = {}) {
       return importState(db, data, opts)
+    },
+
+    /** 导出人读的记忆档案（Markdown），可以贴进博客或复盘。 */
+    report(opts = {}) {
+      return memoryReport(db, { language: cfg.language, ...opts })
     },
 
     /**
