@@ -11,6 +11,7 @@ import {
 } from './layers.mjs'
 import { ensureIdentities, bindIdentity, resolveIdentity, identitiesOf } from './identity.mjs'
 import { handleTurn } from './turn.mjs'
+import { health as runHealth } from './health.mjs'
 
 /**
  * Create a hippocampus instance.
@@ -205,6 +206,11 @@ export async function createHippocampus(options = {}) {
       const n = db.prepare('select count(*) as n, round(avg(strength),2) as strength from events').get()
       const e = db.prepare('select count(*) as n from edges').get()
       return { events: n.n, avgStrength: n.strength, edges: e.n }
+    },
+
+    /** 记忆体检测：只读，了解这份记忆"健康不健康"。 */
+    health(opts = {}) {
+      return runHealth(db, { language: cfg.language, ...opts })
     },
 
     /**
