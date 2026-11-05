@@ -1,5 +1,5 @@
 import { resolveConfig } from './config.mjs'
-import { openStore, daysBetween } from './store.mjs'
+import { openStore, daysBetween, insertEvent } from './store.mjs'
 import { makeLLM } from './llm.mjs'
 import { encodeTurns } from './encode.mjs'
 import { replay as runReplay } from './replay.mjs'
@@ -207,12 +207,13 @@ export async function createHippocampus(options = {}) {
       return { events: n.n, avgStrength: n.strength, edges: e.n }
     },
 
-    /** Insert an event directly (useful for tests / migrations). */
+    /**
+     * Insert an event directly (useful for tests / migrations).
+     * 走 store 的 insertEvent：subject 与 pinned 都要落库，否则"按人隔离"和置顶
+     * 对这条通路都是失效的。
+     */
     addEvent(e) {
-      const st = db.prepare(`insert into events(day,who,topic,what,detail,affect,strength,created)
-        values(?,?,?,?,?,?,?,?)`)
-      st.run(e.day, e.who, e.topic, e.what, e.detail || '', e.affect || 0, e.strength ?? 1, new Date().toISOString())
-      return db.prepare('select last_insert_rowid() as id').get().id
+      return insertEvent(db, e)
     },
 
     link(a, b, w = 1) {
