@@ -1,6 +1,6 @@
 {
   "name": "hippocampus-22",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "陪伴型机器人的情感记忆层：事件编码、情绪加权遗忘、联想召回、关系与技能，还会承认自己记不清。An emotion-weighted memory layer for long-running companion bots.",
   "type": "module",
   "main": "./index.mjs",
