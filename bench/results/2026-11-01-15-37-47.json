@@ -1,0 +1,104 @@
+{
+  "baseline": [
+    {
+      "n": 31,
+      "hits": {
+        "1": 29,
+        "3": 29,
+        "5": 29
+      },
+      "old": {
+        "n": 10,
+        "hit": 9
+      },
+      "neutral": 0.1343219927142395,
+      "emotional": 0.21678436778667187,
+      "falseRecall": 0,
+      "stats": {
+        "events": 211,
+        "avgStrength": 0.14,
+        "edges": 0
+      }
+    },
+    {
+      "n": 32,
+      "hits": {
+        "1": 24,
+        "3": 24,
+        "5": 24
+      },
+      "old": {
+        "n": 11,
+        "hit": 8
+      },
+      "neutral": 0.12470274751192939,
+      "emotional": 0.2470574676777287,
+      "falseRecall": 0,
+      "stats": {
+        "events": 202,
+        "avgStrength": 0.14,
+        "edges": 0
+      }
+    },
+    {
+      "n": 34,
+      "hits": {
+        "1": 31,
+        "3": 29,
+        "5": 31
+      },
+      "old": {
+        "n": 11,
+        "hit": 9
+      },
+      "neutral": 0.12454529668834814,
+      "emotional": 0.2568346028684071,
+      "falseRecall": 0,
+      "stats": {
+        "events": 222,
+        "avgStrength": 0.14,
+        "edges": 0
+      }
+    }
+  ],
+  "longGap": {
+    "before": 2,
+    "after": 2,
+    "kept": true,
+    "recall": [
+      "主人又骑车了，这次不酸了(大概记得)",
+      "主人第一次骑车腿酸(只记得有这回事)"
+    ]
+  },
+  "paraphrase": {
+    "same": 1,
+    "diff": 0
+  },
+  "ablation": {
+    "full": {
+      "recall1": 24,
+      "n": 32,
+      "oldRecall": 73,
+      "emoRatio": 1.9811710055072729
+    },
+    "no-emotion": {
+      "recall1": 24,
+      "n": 32,
+      "oldRecall": 73,
+      "emoRatio": 1.2839057974720254
+    },
+    "no-hop": {
+      "recall1": 24,
+      "n": 32,
+      "oldRecall": 73,
+      "emoRatio": 1.9811710055072729
+    },
+    "fast-forget": {
+      "recall1": 24,
+      "n": 32,
+      "oldRecall": 73,
+      "emoRatio": 1.924101061419326
+    }
+  },
+  "dense": null
+}

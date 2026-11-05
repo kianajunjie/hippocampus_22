@@ -1,0 +1,8 @@
+# hippocampus_22 bundle patch.
+#
+# Inserts the memory plugin into the profile's service tree. The plugin tries
+# the host surface defensively: if `systemPrompt` / `tools` are unavailable it
+# logs and keeps running instead of taking the host down.
+- insert:
+    - id: hippocampus
+      name: 'hippocampus-22'

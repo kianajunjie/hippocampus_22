@@ -1,0 +1,118 @@
+{
+  "baseline": [
+    {
+      "n": 31,
+      "hits": {
+        "1": 21,
+        "3": 21,
+        "5": 21
+      },
+      "old": {
+        "n": 10,
+        "hit": 5
+      },
+      "neutral": 0.1343219927142395,
+      "emotional": 0.21678436778667187,
+      "falseRecall": 0,
+      "stats": {
+        "events": 211,
+        "avgStrength": 0.14,
+        "edges": 0
+      }
+    },
+    {
+      "n": 32,
+      "hits": {
+        "1": 13,
+        "3": 13,
+        "5": 13
+      },
+      "old": {
+        "n": 11,
+        "hit": 3
+      },
+      "neutral": 0.12470274751192939,
+      "emotional": 0.2470574676777287,
+      "falseRecall": 0,
+      "stats": {
+        "events": 202,
+        "avgStrength": 0.14,
+        "edges": 0
+      }
+    },
+    {
+      "n": 34,
+      "hits": {
+        "1": 25,
+        "3": 23,
+        "5": 25
+      },
+      "old": {
+        "n": 11,
+        "hit": 5
+      },
+      "neutral": 0.12454529668834814,
+      "emotional": 0.2568346028684071,
+      "falseRecall": 0,
+      "stats": {
+        "events": 222,
+        "avgStrength": 0.14,
+        "edges": 0
+      }
+    }
+  ],
+  "longGap": {
+    "before": 2,
+    "after": 2,
+    "kept": true,
+    "recall": [
+      "主人又骑车了，这次不酸了(大概记得)"
+    ]
+  },
+  "paraphrase": {
+    "same": 1,
+    "diff": 0,
+    "deep": {
+      "via": "expanded",
+      "hits": 1,
+      "expansions": [
+        "运动",
+        "锻炼",
+        "肌肉",
+        "酸痛"
+      ]
+    }
+  },
+  "ablation": {
+    "full": {
+      "recall1": 13,
+      "n": 32,
+      "oldRecall": 27,
+      "emoRatio": 2.0624586349489697
+    },
+    "no-emotion": {
+      "recall1": 7,
+      "n": 32,
+      "oldRecall": 9,
+      "emoRatio": 1.2763774172224438
+    },
+    "no-hop": {
+      "recall1": 13,
+      "n": 32,
+      "oldRecall": 27,
+      "emoRatio": 2.0624586349489697
+    },
+    "fast-forget": {
+      "recall1": 7,
+      "n": 32,
+      "oldRecall": 9,
+      "emoRatio": 2.0174045243296126
+    }
+  },
+  "dense": {
+    "turns": 2,
+    "events": 6,
+    "probes": 6,
+    "hits": 6
+  }
+}

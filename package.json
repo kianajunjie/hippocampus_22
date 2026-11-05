@@ -1,0 +1,65 @@
+{
+  "name": "hippocampus-22",
+  "version": "0.1.0",
+  "description": "陪伴型机器人的情感记忆层：事件编码、情绪加权遗忘、联想召回、关系与技能，还会承认自己记不清。An emotion-weighted memory layer for long-running companion bots.",
+  "type": "module",
+  "main": "./index.mjs",
+  "exports": {
+    ".": "./index.mjs",
+    "./core": "./src/index.mjs",
+    "./layers": "./src/layers.mjs",
+    "./http": "./src/adapters/http.mjs",
+    "./dsh": "./src/adapters/dsh.mjs",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "hippocampus-22": "./cli.mjs",
+    "hippo": "./cli.mjs"
+  },
+  "files": [
+    "index.mjs",
+    "src",
+    "cli.mjs",
+    "cordis.patch.yml",
+    "docs",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "NOTICE",
+    "examples"
+  ],
+  "scripts": {
+    "test": "node --test test/hippocampus.test.mjs test/drift.test.mjs test/layers.test.mjs test/adapters.test.mjs",
+    "demo": "node cli.mjs demo"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "memory",
+    "companion",
+    "qq-bot",
+    "chatbot",
+    "sqlite",
+    "forgetting",
+    "recall"
+  ],
+  "author": "杨钧杰 (kianajunjie)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kianajunjie/hippocampus_22.git"
+  },
+  "homepage": "https://github.com/kianajunjie/hippocampus_22#readme",
+  "bugs": {
+    "url": "https://github.com/kianajunjie/hippocampus_22/issues"
+  },
+  "dsh": {
+    "manifestVersion": 1,
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "engines": {
+    "node": ">=22.5"
+  }
+}

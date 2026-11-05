@@ -1,0 +1,9 @@
+.hippocampus/
+node_modules/
+*.db
+*.db-*
+*.tgz
+dist/
+coverage/
+.DS_Store
+Thumbs.db

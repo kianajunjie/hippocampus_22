@@ -1,0 +1,13 @@
+hippocampus_22
+Copyright (c) 2026 杨钧杰 (kianajunjie)
+
+This product is a derivative work based on dsh-hippocampus v0.3.1
+(https://github.com/kianajunjie/dsh-hippocampus), which is distributed under
+the MIT License and whose copyright notice is reproduced in LICENSE.
+
+本项目在 dsh-hippocampus v0.3.1（MIT 许可）基础上派生：保留其记忆内核（事件编码、
+情绪加权遗忘、联想召回、关系与技能等层），并在本项目上新增记忆体检测、记忆导入导出、
+人读档案导出、条件遗忘、命令行与工程化规范等模块与文档。
+
+Redistribution of this project, in source or binary form, must keep both this
+NOTICE file and the LICENSE file.
