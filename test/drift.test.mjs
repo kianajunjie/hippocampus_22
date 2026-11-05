@@ -4,6 +4,7 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { execFileSync } from 'node:child_process'
+import { DatabaseSync } from 'node:sqlite'
 import { createHippocampus } from '../src/index.mjs'
 
 const today = new Date().toLocaleDateString('sv-SE')
@@ -66,14 +67,17 @@ test('pinned memories do not decay', async () => {
   hip.close()
 })
 
-test('CLI keeps flag values out of the remembered text', () => {
+test('CLI 不会把命令行选项当正文记下来', () => {
   const db = tmpDb()
   const cli = path.join(import.meta.dirname, '..', 'cli.mjs')
-  execFileSync(process.execPath, [cli, 'remember', '主人怕黑，留盏灯', '--subject', 'owner', '--pin', '--topic', 'fear', '--db', db], { encoding: 'utf8' })
-  const out = execFileSync(process.execPath, [cli, 'list', '--db', db], { encoding: 'utf8' })
-  assert.ok(out.includes('主人怕黑'), out)
-  assert.ok(!out.includes('--subject'), 'flag names must not leak into text')
-  assert.ok(!/主人怕黑[^(\n]*--/.test(out), 'flag values must not leak into the remembered text')
-  assert.ok(/主人怕黑，留盏灯\s+\(1\.00\)/.test(out), 'text should end right before the strength column')
-  assert.ok(out.includes('📌'), 'pin flag should apply')
+  // stdio 用 ignore：不抓子进程输出，断言直接读库，比断言行格式稳
+  execFileSync(process.execPath, [
+    cli, 'remember', '主人怕黑，留盏灯', '--subject', 'owner', '--pin', '--topic', 'fear', '--db', db,
+  ], { stdio: 'ignore' })
+
+  const row = new DatabaseSync(db).prepare('select what, subject, pinned from events').get()
+  assert.equal(row.what, '主人怕黑，留盏灯', '正文就是正文，选项不能被当成正文')
+  assert.ok(!String(row.what).includes('--'), 'flag names must not leak into text')
+  assert.equal(row.subject, 'owner', '--subject 要落库')
+  assert.equal(row.pinned, 1, '--pin 要落库')
 })
