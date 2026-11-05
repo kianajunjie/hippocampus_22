@@ -1,0 +1,42 @@
+name: Bug 报告
+description: 记错了、召回不出来、踩了什么坑
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        谢谢反馈。请尽量把复现步骤写全，能贴命令就直接贴命令。
+  - type: textarea
+    id: what
+    attributes:
+      label: 发生了什么
+      description: 期望什么，实际什么
+      placeholder: 我 `hippo recall "腿疼"`，期望召回两条，实际返回 (nothing)
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现步骤
+      description: 命令、输入、涉及的数据（可脱敏）
+      placeholder: |
+        1. node cli.mjs demo
+        2. node cli.mjs recall "腿"
+      render: bash
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 版本 / Node 版本
+      placeholder: hippocampus-22 v0.2.0, node v22.5.0, Windows 11
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 报错或日志
+      render: shell
+    validations:
+      required: false

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 先看文档
+    url: https://github.com/kianajunjie/hippocampus_22/tree/main/docs
+    about: 架构、设计取舍、命令行与接入方式都写在 docs/ 里
+  - name: 怎么贡献
+    url: https://github.com/kianajunjie/hippocampus_22/blob/main/CONTRIBUTING.md
+    about: 分支约定、提交规范、PR 流程

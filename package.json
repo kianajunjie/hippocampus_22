@@ -30,7 +30,7 @@
     "examples"
   ],
   "scripts": {
-    "test": "node --test test/hippocampus.test.mjs test/drift.test.mjs test/layers.test.mjs test/adapters.test.mjs",
+    "test": "node --test test/",
     "demo": "node cli.mjs demo"
   },
   "keywords": [
