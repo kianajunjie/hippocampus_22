@@ -159,9 +159,27 @@ if (cmd === 'encode') {
   console.log('seeded', { a, b, c })
   console.log('--- recall "legs" ---')
   console.log(hip.recallText('legs') || '(nothing)')
+
+  // 情绪加权对照：同一天发生、初始强度相同，只差 affect
+  const past = new Date(Date.now() - 60 * 86400000).toLocaleDateString('sv-SE')
+  const plain = hip.addEvent({ day: past, who: 'user', topic: 'compare-plain', what: '一个普通的一天', strength: 1, affect: 0 })
+  const harsh = hip.addEvent({ day: past, who: 'user', topic: 'compare-harsh', what: '被凶的那天', strength: 1, affect: -2 })
+  const strengthOf = (id) => hip.db.prepare('select strength from events where id=?').get(id)?.strength ?? 0
+  const before = { plain: strengthOf(plain), harsh: strengthOf(harsh) }
+
   const r = await hip.replay()
   console.log('--- replay ---')
   console.log(JSON.stringify(r))
+
+  const fmt = (n) => n.toFixed(3)
+  const lines = [
+    '--- 情绪加权对照（同样 60 天前、同样初始强度 1.0，只差 affect）---',
+    `affect = 0  「一个普通的一天」 ${fmt(before.plain)} -> ${fmt(strengthOf(plain))}`,
+    `affect = -2 「被凶的那天」     ${fmt(before.harsh)} -> ${fmt(strengthOf(harsh))}`,
+    `结论：情绪强度把衰减的时间常数 τ 从 1 拉到 ${fmt(1 + Math.abs(-2) * (hip.cfg.decay.emotionBoost ?? 2))}，同样 60 天后前者只剩 ${Math.round((strengthOf(plain) / before.plain) * 100)}%，后者还有 ${Math.round((strengthOf(harsh) / before.harsh) * 100)}%。`,
+  ]
+  console.log(lines.join('\n'))
+
   console.log('--- stats ---')
   console.log(JSON.stringify(hip.stats()))
 } else {
